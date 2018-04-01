@@ -4,11 +4,11 @@
 
 using namespace emscripten;
 
-float minimize(emscripten::val const & pa0, emscripten::val const & pb0) {
+std::vector<double> minimize(emscripten::val const & pa0, emscripten::val const & pb0) {
 	assert(pa0["length"].as<int>() == pb0["length"].as<int>());
 	int n_data = pa0["length"].as<int>();
 	assert(n_data % 3 == 0);
-	printf("n_data: %d\n", n_data);
+	//printf("n_data: %d\n", n_data);
 
 	Eigen::MatrixXd pa(3, n_data/3);
 	Eigen::MatrixXd pb(3, n_data/3);
@@ -48,10 +48,16 @@ float minimize(emscripten::val const & pa0, emscripten::val const & pb0) {
 	//x0 << q00.x(), q00.y(), q00.z(), q00.w(), scale00(0,0), scale00(1,1), scale00(2,2);
 	x0 << 0, 0, 0, 1, 1, 1, 1;
   	double c = fcost(x0.data(), n_params);
-	std::cout << "x0: " << x0.transpose() << " fcost(x0): " << c << std::endl;
+	//std::cout << "x0: " << x0.transpose() << " fcost(x0): " << c << std::endl;
     double sigma0 = 1;
     Solution sol = cmaes.fmin(x0, n_params, sigma0, 6, 999, fcost, ftransform);
-	return sol.f;
+
+	std::vector<double> res;
+	for (int i = 0; i < n_params; i++)
+		res.push_back(sol.params[i]);
+	res.push_back(sol.f);
+
+	return res;
 }
 	
 

@@ -267,7 +267,7 @@ namespace CMAES {
             era.reinit(n_offsprings, n_parents, n_params, x0, sigma0);
             optimize();
             budget[0] += era.i_func_eval;
-            std::cout << "i_run: " << i_run << " / " << n_restarts << " completed. f_best: " << f_best << std::endl;
+            //std::cout << "i_run: " << i_run << " / " << n_restarts << " completed. f_best: " << f_best << std::endl;
         }
         // <-
         
