@@ -1,0 +1,8 @@
+# hidden files
+.*
+
+# generated
+node_modules
+
+# exceptino
+!.gitignore
